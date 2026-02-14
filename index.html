@@ -802,22 +802,6 @@
             animation: facetShine 3s ease-in-out infinite;
         }
 
-        /* Light reflection sweeping across */
-        .diamond-reflection {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(90deg,
-                    transparent 0%,
-                    rgba(255, 255, 255, 0) 35%,
-                    rgba(255, 255, 255, 0.6) 50%,
-                    rgba(255, 255, 255, 0) 65%,
-                    transparent 100%);
-            transform: rotate(45deg);
-            animation: reflectionSweep 3s ease-in-out infinite;
-        }
 
         @keyframes diamondEntrance {
             0% {
@@ -1033,9 +1017,7 @@
 
         <!-- Diamond icon -->
         <div class="preloader-diamond">
-            <div class="diamond-shape">
-                <div class="diamond-reflection"></div>
-            </div>
+            <div class="diamond-shape"></div>
         </div>
 
         <!-- Brand name -->
