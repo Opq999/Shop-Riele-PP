@@ -158,28 +158,33 @@
         /* Rising Sparkle Particles */
         .bg-particle {
             position: absolute;
-            border-radius: 50%;
+            /* 4-point star shape */
+            clip-path: polygon(50% 0%, 65% 40%, 100% 50%, 65% 60%, 50% 100%, 35% 60%, 0% 50%, 35% 40%);
+            background-color: white;
+            /* Fallback */
             pointer-events: none;
             animation: particleRise linear forwards;
+            will-change: transform, opacity;
         }
 
         @keyframes particleRise {
             0% {
                 opacity: 0;
-                transform: translateY(0) translateX(0) scale(0.5);
+                transform: translateY(0) translateX(0) scale(0.2) rotate(0deg);
             }
 
             15% {
                 opacity: 1;
             }
 
-            85% {
-                opacity: 0.6;
+            50% {
+                opacity: 0.8;
+                transform: translateY(-50vh) translateX(calc(var(--drift) * 0.5)) scale(0.4) rotate(180deg);
             }
 
             100% {
                 opacity: 0;
-                transform: translateY(-100vh) translateX(var(--drift)) scale(0.2);
+                transform: translateY(-100vh) translateX(var(--drift)) scale(0) rotate(360deg);
             }
         }
 
@@ -494,6 +499,7 @@
             margin-bottom: 10px;
             overflow: hidden;
             transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+            backface-visibility: hidden;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transform: translateY(20px);
@@ -556,7 +562,8 @@
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.35s ease-out;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: max-height;
         }
 
         .faq-answer p {
@@ -565,15 +572,15 @@
             line-height: 1.8;
             padding: 0 20px 20px 20px;
             margin: 0;
-            transform: translateY(10px);
             opacity: 0;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            transition: opacity 0.3s ease;
+            will-change: opacity;
         }
 
         .faq-item.active .faq-answer p {
-            transform: translateY(0);
             opacity: 1;
-            transition-delay: 0.1s;
+            transition-delay: 0.2s;
+            /* Wait for box to open partially */
         }
 
         /* ============================================
@@ -1246,33 +1253,31 @@
             const particle = document.createElement('div');
             particle.className = 'bg-particle';
 
-            // Random size (small glowing dots)
-            const size = 3 + Math.random() * 6;
+            // Random size (larger for stars)
+            const size = 8 + Math.random() * 12;
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
 
             // Random position at bottom
             particle.style.left = `${Math.random() * 100}%`;
-            particle.style.bottom = `${-2}%`;
+            particle.style.bottom = `${-5}%`;
 
             // Random horizontal drift
-            const drift = -40 + Math.random() * 80;
+            const drift = -30 + Math.random() * 60;
             particle.style.setProperty('--drift', `${drift}px`);
 
-            // Colors from jewelry palette
+            // Colors from jewelry palette - brighter for stars
             const colors = [
-                'rgba(201, 169, 110, 0.6)',
-                'rgba(179, 157, 219, 0.5)',
-                'rgba(212, 185, 122, 0.7)',
-                'rgba(139, 108, 193, 0.4)',
-                'rgba(255, 223, 150, 0.5)',
-                'rgba(230, 210, 180, 0.6)'
+                'rgba(255, 255, 255, 0.9)',
+                'rgba(201, 169, 110, 0.8)',
+                'rgba(179, 157, 219, 0.7)',
+                'rgba(255, 223, 150, 0.8)'
             ];
             const color = colors[Math.floor(Math.random() * colors.length)];
             particle.style.background = color;
 
-            // Random duration
-            const duration = 6 + Math.random() * 10;
+            // Slower duration for stars
+            const duration = 15 + Math.random() * 15;
             particle.style.animationDuration = `${duration}s`;
 
             container.appendChild(particle);
