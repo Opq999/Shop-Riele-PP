@@ -554,13 +554,21 @@
         }
 
         .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0 20px;
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
         }
 
         .faq-item.active .faq-answer {
+            grid-template-rows: 1fr;
+        }
+
+        .faq-answer>p {
+            overflow: hidden;
+            padding: 0 20px;
+        }
+
+        .faq-item.active .faq-answer>p {
             padding: 0 20px 18px 20px;
         }
 
@@ -1174,30 +1182,20 @@
             faqQuestions.forEach(question => {
                 question.addEventListener('click', function () {
                     const faqItem = this.parentElement;
-                    const answer = faqItem.querySelector('.faq-answer');
                     const icon = this.querySelector('.faq-icon');
-
                     const isActive = faqItem.classList.contains('active');
 
-                    // Close all other FAQs smoothly
+                    // Close all other FAQs
                     document.querySelectorAll('.faq-item').forEach(item => {
                         if (item !== faqItem) {
                             item.classList.remove('active');
-                            item.querySelector('.faq-answer').style.maxHeight = '0';
                             item.querySelector('.faq-icon').textContent = '+';
                         }
                     });
 
-                    // Toggle current FAQ
-                    if (!isActive) {
-                        faqItem.classList.add('active');
-                        answer.style.maxHeight = answer.scrollHeight + 18 + 'px';
-                        icon.textContent = '−';
-                    } else {
-                        faqItem.classList.remove('active');
-                        answer.style.maxHeight = '0';
-                        icon.textContent = '+';
-                    }
+                    // Toggle current
+                    faqItem.classList.toggle('active', !isActive);
+                    icon.textContent = isActive ? '+' : '−';
                 });
             });
         }
