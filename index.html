@@ -1247,7 +1247,7 @@
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
             const isMobile = matchMedia('(pointer: coarse)').matches || innerWidth < 768;
-            const delay = isMobile ? 700 : 3200;
+            const delay = isMobile ? 3200 : 3200;
 
             setTimeout(() => {
                 preloader.classList.add('hidden');
