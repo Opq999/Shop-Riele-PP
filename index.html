@@ -32,20 +32,7 @@
         }
 
         /* Subtle background texture */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(ellipse at 20% 20%, rgba(139, 108, 193, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(201, 169, 110, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(139, 108, 193, 0.08) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
+
 
         @keyframes backgroundBreath {
 
@@ -75,116 +62,89 @@
 
         .bg-shape {
             position: absolute;
-            opacity: 0.3;
-            filter: blur(30px);
+            opacity: 0.06;
+            filter: blur(2px);
             pointer-events: none;
-            will-change: transform;
         }
 
         .bg-shape.circle {
-            width: 300px;
-            height: 300px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(196, 176, 224, 0.6), rgba(221, 196, 154, 0.4));
+            background: linear-gradient(135deg, #8b6cc1, #c9a96e);
             animation: float-rotate 25s infinite ease-in-out;
         }
 
         .bg-shape.square {
-            width: 250px;
-            height: 250px;
-            border-radius: 40px;
-            background: radial-gradient(circle, rgba(179, 157, 219, 0.5), rgba(201, 169, 110, 0.4));
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #8b6cc1, #b39ddb);
             animation: float-drift 30s infinite ease-in-out;
         }
 
         .bg-shape.diamond {
-            width: 280px;
-            height: 280px;
-            background: radial-gradient(circle, rgba(212, 197, 235, 0.5), rgba(224, 200, 154, 0.4));
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #c9a96e, #b39ddb);
             transform: rotate(45deg);
-            border-radius: 60px;
             animation: float-spin 35s infinite linear;
         }
 
-        /* Ambient Scanner Lights */
-        .scanner-light {
-            position: fixed;
-            top: -100%;
-            left: -100%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(135deg,
-                    transparent 42%,
-                    rgba(179, 157, 219, 0.04) 46%,
-                    rgba(255, 255, 255, 0.08) 50%,
-                    rgba(201, 169, 110, 0.04) 54%,
-                    transparent 58%);
-            pointer-events: none;
-            z-index: 0;
-            animation: scanMove 10s infinite linear;
-        }
 
-        .scanner-light:nth-child(2) {
-            animation: scanMoveReverse 14s infinite linear;
-            animation-delay: -5s;
-            background: linear-gradient(-135deg,
-                    transparent 42%,
-                    rgba(201, 169, 110, 0.03) 46%,
-                    rgba(255, 255, 255, 0.06) 50%,
-                    rgba(179, 157, 219, 0.03) 54%,
-                    transparent 58%);
-        }
 
-        @keyframes scanMove {
-            0% {
-                transform: translate(-30%, -30%);
-            }
-
-            100% {
-                transform: translate(20%, 20%);
-            }
-        }
-
-        @keyframes scanMoveReverse {
-            0% {
-                transform: translate(20%, -30%);
-            }
-
-            100% {
-                transform: translate(-30%, 20%);
-            }
-        }
-
-        /* Rising Sparkle Particles */
+        /* Rising Stars */
         .bg-particle {
             position: absolute;
-            /* 4-point star shape */
-            clip-path: polygon(50% 0%, 65% 40%, 100% 50%, 65% 60%, 50% 100%, 35% 60%, 0% 50%, 35% 40%);
-            background-color: white;
-            /* Fallback */
+            width: 2px;
+            height: 2px;
+            background: radial-gradient(circle, #ffffff 0%, #b39ddb 70%, transparent 100%);
+            border-radius: 50%;
             pointer-events: none;
+            box-shadow:
+                0 0 2px 0.5px rgba(255, 255, 255, 0.5),
+                0 0 4px 1px rgba(179, 157, 219, 0.3);
             animation: particleRise linear forwards;
-            will-change: transform, opacity;
+        }
+
+        .bg-particle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translate(-50%, -50%);
+        }
+
+        .bg-particle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1px;
+            height: 5px;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translate(-50%, -50%);
         }
 
         @keyframes particleRise {
             0% {
                 opacity: 0;
-                transform: translateY(0) translateX(0) scale(0.2) rotate(0deg);
+                transform: translateY(0) scale(0.5);
             }
 
-            15% {
-                opacity: 1;
+            10% {
+                opacity: 0.6;
             }
 
-            50% {
-                opacity: 0.8;
-                transform: translateY(-50vh) translateX(calc(var(--drift) * 0.5)) scale(0.4) rotate(180deg);
+            90% {
+                opacity: 0.6;
             }
 
             100% {
                 opacity: 0;
-                transform: translateY(-100vh) translateX(var(--drift)) scale(0) rotate(360deg);
+                transform: translateY(-100vh) scale(0.8);
             }
         }
 
@@ -493,14 +453,12 @@
         }
 
         .faq-item {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(139, 108, 193, 0.2);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(139, 108, 193, 0.15);
+            border-radius: 12px;
             margin-bottom: 10px;
             overflow: hidden;
-            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-            backface-visibility: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
             opacity: 0;
             transform: translateY(20px);
         }
@@ -562,19 +520,18 @@
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 250ms ease;
+            transition: max-height 0.4s ease, padding 0.4s ease;
         }
 
         .faq-item.active .faq-answer {
-            max-height: 240px;
+            max-height: 500px;
+            padding: 0 20px 18px 20px;
         }
 
         .faq-answer p {
             color: #b0a3c4;
             font-size: 14px;
-            line-height: 1.8;
-            padding: 0 20px 20px 20px;
-            margin: 0;
+            line-height: 1.7;
         }
 
         /* ============================================
@@ -585,18 +542,14 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top,
-                    rgba(13, 10, 20, 0.98) 60%,
-                    rgba(13, 10, 20, 0.85) 80%,
-                    transparent);
+            background: linear-gradient(to top, rgba(13, 10, 20, 1) 80%, transparent);
             padding: 16px 20px 24px 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
             align-items: center;
             z-index: 100;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(139, 108, 193, 0.1);
         }
 
         #primary-btn {
@@ -619,7 +572,7 @@
             text-transform: uppercase;
             position: relative;
             overflow: hidden;
-            animation: btnPulse 3s ease-in-out infinite;
+            animation: none;
         }
 
         #primary-btn::before {
@@ -1007,29 +960,10 @@
             }
         }
 
-        /* Mobile performance: reduce blur cost */
-        @media (pointer: coarse),
-        (max-width: 768px) {
-            .bg-shape {
-                filter: blur(18px);
-                opacity: 0.22;
-            }
-
-            #action-bar {
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                background: linear-gradient(to top,
-                        rgba(13, 10, 20, 0.995) 60%,
-                        rgba(13, 10, 20, 0.92) 80%,
-                        transparent);
-            }
-        }
-
         /* Respect reduced-motion preference */
         @media (prefers-reduced-motion: reduce) {
 
             .bg-shape,
-            .scanner-light,
             .bg-particle {
                 animation: none !important;
             }
@@ -1073,10 +1007,7 @@
     </div>
 
     <!-- Background Ambience Container -->
-    <div id="bg-ambience">
-        <div class="scanner-light"></div>
-        <div class="scanner-light"></div>
-    </div>
+    <div id="bg-ambience"></div>
 
     <!-- Main Content -->
     <div id="app">
@@ -1250,7 +1181,7 @@
         // ============================================
         function createBackgroundShapes() {
             const container = document.getElementById('bg-ambience');
-            const shapeCount = 4;
+            const shapeCount = 8;
 
             for (let i = 0; i < shapeCount; i++) {
                 const shape = document.createElement('div');
@@ -1281,46 +1212,28 @@
         // ============================================
         function createBgParticle() {
             const container = document.getElementById('bg-ambience');
-            // Hard-cap DOM particles
-            if (container.querySelectorAll('.bg-particle').length > 12) return;
+            const star = document.createElement('div');
+            star.className = 'bg-particle';
 
-            const particle = document.createElement('div');
-            particle.className = 'bg-particle';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.bottom = `${-10 + Math.random() * 20}%`;
 
-            const size = 8 + Math.random() * 12;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.bottom = '-5%';
+            const size = 1 + Math.random() * 1.5;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
 
-            const drift = -30 + Math.random() * 60;
-            particle.style.setProperty('--drift', `${drift}px`);
+            const duration = 6 + Math.random() * 8;
+            star.style.animationDuration = `${duration}s`;
 
-            const colors = [
-                'rgba(255, 255, 255, 0.9)',
-                'rgba(201, 169, 110, 0.8)',
-                'rgba(179, 157, 219, 0.7)',
-                'rgba(255, 223, 150, 0.8)'
-            ];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            particle.style.background = color;
-
-            const duration = 15 + Math.random() * 15;
-            particle.style.animationDuration = `${duration}s`;
-
-            container.appendChild(particle);
-            setTimeout(() => particle.remove(), duration * 1000);
+            container.appendChild(star);
+            setTimeout(() => star.remove(), duration * 1000);
         }
 
         function startBgParticles() {
-            const isMobile = matchMedia('(pointer: coarse)').matches || innerWidth < 768;
-            if (isMobile) {
-                for (let i = 0; i < 2; i++) setTimeout(createBgParticle, i * 900);
-                setInterval(createBgParticle, 3500);
-            } else {
-                for (let i = 0; i < 4; i++) setTimeout(createBgParticle, i * 600);
-                setInterval(createBgParticle, 1500);
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => createBgParticle(), i * 400);
             }
+            setInterval(createBgParticle, 600);
         }
 
         // ============================================
