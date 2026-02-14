@@ -18,10 +18,16 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(160deg, #fdf8f3 0%, #f5efe8 30%, #f0e9f5 60%, #fdf8f3 100%);
-            color: #3a2d4f;
+            background: linear-gradient(160deg, #0d0a14 0%, #15101f 30%, #110e1a 60%, #0d0a14 100%);
+            background-size: 400% 400%;
+            animation: backgroundBreath 20s ease infinite;
+            color: #e0d6ee;
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
@@ -36,11 +42,23 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(ellipse at 20% 20%, rgba(179, 157, 219, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(201, 169, 110, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(179, 157, 219, 0.04) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 20%, rgba(139, 108, 193, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(201, 169, 110, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(139, 108, 193, 0.08) 0%, transparent 60%);
             pointer-events: none;
             z-index: 0;
+        }
+
+        @keyframes backgroundBreath {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         /* ============================================
@@ -59,33 +77,111 @@
 
         .bg-shape {
             position: absolute;
-            opacity: 0.07;
-            filter: blur(3px);
+            opacity: 0.3;
+            filter: blur(40px);
+            pointer-events: none;
         }
 
         .bg-shape.circle {
-            width: 180px;
-            height: 180px;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #c4b0e0, #ddc49a);
+            background: radial-gradient(circle, rgba(196, 176, 224, 0.6), rgba(221, 196, 154, 0.4));
             animation: float-rotate 25s infinite ease-in-out;
         }
 
         .bg-shape.square {
-            width: 140px;
-            height: 140px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #b39ddb, #c9a96e);
+            width: 250px;
+            height: 250px;
+            border-radius: 40px;
+            background: radial-gradient(circle, rgba(179, 157, 219, 0.5), rgba(201, 169, 110, 0.4));
             animation: float-drift 30s infinite ease-in-out;
         }
 
         .bg-shape.diamond {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #d4c5eb, #e0c89a);
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(212, 197, 235, 0.5), rgba(224, 200, 154, 0.4));
             transform: rotate(45deg);
-            border-radius: 12px;
+            border-radius: 60px;
             animation: float-spin 35s infinite linear;
+        }
+
+        /* Ambient Scanner Lights */
+        .scanner-light {
+            position: fixed;
+            top: -100%;
+            left: -100%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg,
+                    transparent 42%,
+                    rgba(179, 157, 219, 0.04) 46%,
+                    rgba(255, 255, 255, 0.08) 50%,
+                    rgba(201, 169, 110, 0.04) 54%,
+                    transparent 58%);
+            pointer-events: none;
+            z-index: 0;
+            animation: scanMove 10s infinite linear;
+        }
+
+        .scanner-light:nth-child(2) {
+            animation: scanMoveReverse 14s infinite linear;
+            animation-delay: -5s;
+            background: linear-gradient(-135deg,
+                    transparent 42%,
+                    rgba(201, 169, 110, 0.03) 46%,
+                    rgba(255, 255, 255, 0.06) 50%,
+                    rgba(179, 157, 219, 0.03) 54%,
+                    transparent 58%);
+        }
+
+        @keyframes scanMove {
+            0% {
+                transform: translate(-30%, -30%);
+            }
+
+            100% {
+                transform: translate(20%, 20%);
+            }
+        }
+
+        @keyframes scanMoveReverse {
+            0% {
+                transform: translate(20%, -30%);
+            }
+
+            100% {
+                transform: translate(-30%, 20%);
+            }
+        }
+
+        /* Rising Sparkle Particles */
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleRise linear forwards;
+        }
+
+        @keyframes particleRise {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) scale(0.5);
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            85% {
+                opacity: 0.6;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) translateX(var(--drift)) scale(0.2);
+            }
         }
 
         @keyframes float-rotate {
@@ -194,9 +290,7 @@
             animation: fadeSlideUp 0.8s ease-out 0.1s both;
         }
 
-        #hero {
-            animation: fadeSlideUp 0.8s ease-out 0.3s both;
-        }
+
 
         #rules {
             animation: fadeSlideUp 0.8s ease-out 0.5s both;
@@ -258,48 +352,37 @@
         /* ============================================
            HERO STATUS CARD — Glassmorphism
            ============================================ */
-        #hero {
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(179, 157, 219, 0.2);
-            border-radius: 20px;
-            padding: 28px 24px;
-            text-align: center;
-            margin-bottom: 32px;
-            box-shadow:
-                0 8px 32px rgba(139, 108, 193, 0.08),
-                0 2px 8px rgba(0, 0, 0, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: all 0.4s ease;
-        }
-
-        #hero:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 12px 40px rgba(139, 108, 193, 0.12),
-                0 4px 12px rgba(0, 0, 0, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        }
-
-        #hero h2 {
+        /* ============================================
+           BADGE (PriorityPass)
+           ============================================ */
+        .priority-badge {
             display: inline-block;
             font-size: 11px;
             font-weight: 600;
-            color: #7c5cbf;
-            letter-spacing: 2.5px;
+            color: #c4a0ff;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            padding: 8px 18px;
-            border: 1.5px solid rgba(124, 92, 191, 0.3);
-            border-radius: 24px;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, rgba(179, 157, 219, 0.12), rgba(201, 169, 110, 0.08));
+            padding: 8px 24px;
+            border: 1px solid rgba(139, 108, 193, 0.4);
+            border-radius: 50px;
+            margin: 0 auto 40px auto;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            animation: fadeSlideUp 0.8s ease-out 0.4s both;
+            box-shadow: 0 4px 12px rgba(139, 108, 193, 0.15);
+            transition: all 0.3s ease;
         }
 
-        #hero-subtext {
-            font-size: 15px;
-            color: #6b5e7a;
-            font-weight: 400;
+        .priority-badge:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(139, 108, 193, 0.12);
+            border-color: rgba(139, 108, 193, 0.5);
+        }
+
+        .priority-badge-container {
+            text-align: center;
+            width: 100%;
         }
 
         /* ============================================
@@ -313,7 +396,7 @@
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: #3a2d4f;
+            color: #e0d6ee;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -333,7 +416,7 @@
         }
 
         #rules-list li {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-left: 3px solid transparent;
@@ -343,15 +426,22 @@
             border-radius: 12px;
             font-size: 15px;
             font-weight: 400;
-            color: #4a3d5e;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            color: #d0c4e0;
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        #rules-list li:hover {
-            background: rgba(255, 255, 255, 0.75);
-            transform: translateX(6px);
-            box-shadow: 0 4px 16px rgba(139, 108, 193, 0.1);
+        #rules-list li.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #rules-list li.visible:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 28px rgba(139, 108, 193, 0.25), 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .checkmark {
@@ -367,20 +457,25 @@
             margin-right: 14px;
             font-size: 13px;
             flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        #rules-list li.visible:hover .checkmark {
+            transform: scale(1.15);
         }
 
         /* ============================================
            FAQ ACCORDION
            ============================================ */
         #faq {
-            margin-bottom: 40px;
+            margin-bottom: 16px;
         }
 
         #faq h3 {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: #3a2d4f;
+            color: #e0d6ee;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -396,26 +491,34 @@
         }
 
         .faq-item {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(179, 157, 219, 0.12);
+            border: 1px solid rgba(139, 108, 193, 0.2);
             border-radius: 16px;
             margin-bottom: 10px;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        .faq-item:hover {
-            border-color: rgba(139, 108, 193, 0.25);
-            box-shadow: 0 4px 16px rgba(139, 108, 193, 0.08);
+        .faq-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-item.visible:hover {
+            transform: translateY(-3px);
+            border-color: rgba(139, 108, 193, 0.3);
+            box-shadow: 0 8px 24px rgba(139, 108, 193, 0.2), 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .faq-item.active {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(139, 108, 193, 0.3);
-            box-shadow: 0 6px 24px rgba(139, 108, 193, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(139, 108, 193, 0.4);
+            box-shadow: 0 6px 24px rgba(139, 108, 193, 0.2);
         }
 
         .faq-question {
@@ -426,12 +529,12 @@
             align-items: center;
             font-weight: 500;
             font-size: 15px;
-            color: #3a2d4f;
+            color: #e0d6ee;
             transition: all 0.3s ease;
         }
 
         .faq-question:hover {
-            color: #7c5cbf;
+            color: #c4a0ff;
         }
 
         .faq-icon {
@@ -441,7 +544,7 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(139, 108, 193, 0.1), rgba(201, 169, 110, 0.1));
+            background: linear-gradient(135deg, rgba(139, 108, 193, 0.2), rgba(201, 169, 110, 0.15));
             font-size: 18px;
             font-weight: 400;
             color: #7c5cbf;
@@ -467,7 +570,7 @@
         }
 
         .faq-answer p {
-            color: #6b5e7a;
+            color: #b0a3c4;
             font-size: 14px;
             line-height: 1.8;
         }
@@ -481,8 +584,8 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top,
-                    rgba(253, 248, 243, 0.98) 60%,
-                    rgba(253, 248, 243, 0.8) 80%,
+                    rgba(13, 10, 20, 0.98) 60%,
+                    rgba(13, 10, 20, 0.85) 80%,
                     transparent);
             padding: 16px 20px 24px 20px;
             display: flex;
@@ -514,6 +617,7 @@
             text-transform: uppercase;
             position: relative;
             overflow: hidden;
+            animation: btnPulse 3s ease-in-out infinite;
         }
 
         #primary-btn::before {
@@ -547,15 +651,15 @@
            ============================================ */
         #branding {
             text-align: center;
-            padding: 24px 20px 18px 20px;
-            margin-top: 20px;
-            border-top: 1px solid rgba(139, 108, 193, 0.1);
+            padding: 8px 20px 4px 20px;
+            margin-top: 4px;
+            border-top: 1px solid rgba(139, 108, 193, 0.2);
             animation: fadeSlideUp 0.8s ease-out 0.9s both;
         }
 
         #branding p {
             font-size: 13px;
-            color: #9a8aaf;
+            color: #8a7aa0;
             font-weight: 400;
             letter-spacing: 0.5px;
         }
@@ -604,7 +708,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(160deg, #fdf8f3 0%, #f5efe8 40%, #f0e9f5 70%, #faf6f0 100%);
+            background: linear-gradient(160deg, #0d0a14 0%, #15101f 40%, #110e1a 70%, #0d0a14 100%);
             z-index: 9999;
             display: flex;
             justify-content: center;
@@ -629,8 +733,8 @@
             height: 320px;
             border-radius: 50%;
             background: radial-gradient(circle,
-                    rgba(201, 169, 110, 0.15) 0%,
-                    rgba(179, 157, 219, 0.08) 40%,
+                    rgba(201, 169, 110, 0.25) 0%,
+                    rgba(179, 157, 219, 0.15) 40%,
                     transparent 70%);
             animation: pulseGlow 3s ease-in-out infinite;
         }
@@ -798,7 +902,7 @@
             font-weight: 400;
             letter-spacing: 6px;
             text-transform: uppercase;
-            color: #a594b8;
+            color: #c4b0d8;
             opacity: 0;
             transform: translateY(15px);
             animation: preloaderTextReveal 0.8s ease-out 1.5s forwards;
@@ -823,53 +927,7 @@
             }
         }
 
-        /* ---- Sparkle Particles ---- */
-        .sparkle {
-            position: absolute;
-            pointer-events: none;
-            border-radius: 50%;
-        }
 
-        .sparkle::before,
-        .sparkle::after {
-            content: '';
-            position: absolute;
-            background: currentColor;
-        }
-
-        .sparkle::before {
-            width: 100%;
-            height: 2px;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            border-radius: 2px;
-        }
-
-        .sparkle::after {
-            width: 2px;
-            height: 100%;
-            left: 50%;
-            top: 0;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-
-        @keyframes sparkleAnim {
-            0% {
-                opacity: 0;
-                transform: scale(0) rotate(0deg);
-            }
-
-            30% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(1) rotate(180deg);
-            }
-        }
 
         /* ---- Floating Ring Circles (jewelry motif) ---- */
         .preloader-ring {
@@ -950,6 +1008,18 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(139, 108, 193, 0.35);
         }
+
+        @keyframes btnPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 6px 24px rgba(139, 108, 193, 0.25), 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            50% {
+                box-shadow: 0 8px 36px rgba(139, 108, 193, 0.4), 0 0 20px rgba(139, 108, 193, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+        }
     </style>
 </head>
 
@@ -973,12 +1043,14 @@
         <div class="preloader-line"></div>
         <p class="preloader-subtitle">PriorityPass</p>
 
-        <!-- Sparkles container (JS populated) -->
-        <div id="preloader-sparkles"></div>
+
     </div>
 
     <!-- Background Ambience Container -->
-    <div id="bg-ambience"></div>
+    <div id="bg-ambience">
+        <div class="scanner-light"></div>
+        <div class="scanner-light"></div>
+    </div>
 
     <!-- Main Content -->
     <div id="app">
@@ -989,10 +1061,10 @@
         </header>
 
         <!-- Hero Status Card -->
-        <section id="hero">
-            <h2>PriorityPass</h2>
-            <p id="hero-subtext">Your one-stop shop. Quality guaranteed.</p>
-        </section>
+        <!-- Priority Pass Badge -->
+        <div class="priority-badge-container">
+            <div class="priority-badge">PriorityPass</div>
+        </div>
 
         <!-- Rules of Engagement -->
         <section id="rules">
@@ -1167,63 +1239,68 @@
                 }
 
                 shape.style.left = `${Math.random() * 100}%`;
-                shape.style.top = `${Math.random() * 100}%`;
-                shape.style.animationDelay = `${Math.random() * 10}s`;
-                shape.style.animationDuration = `${20 + Math.random() * 15}s`;
+                shape.style.top = `${Math.random() * 150 - 25}%`; // Allow bleed off screen
+                shape.style.width = `${200 + Math.random() * 200}px`; // Randomized scale
+                shape.style.height = shape.style.width;
+                shape.style.animationDelay = `${-Math.random() * 20}s`;
+                shape.style.animationDuration = `${30 + Math.random() * 30}s`;
 
                 container.appendChild(shape);
             }
         }
 
         // ============================================
-        // FLOATING PETALS (Light Mode Ambience)
+        // RISING SPARKLE PARTICLES
         // ============================================
-        function createFloatingPetal() {
+        function createBgParticle() {
             const container = document.getElementById('bg-ambience');
-            const petal = document.createElement('div');
-            petal.className = 'floating-petal';
+            const particle = document.createElement('div');
+            particle.className = 'bg-particle';
 
-            // Random horizontal position
-            petal.style.left = `${Math.random() * 100}%`;
-            petal.style.top = `${-5}%`;
+            // Random size (small glowing dots)
+            const size = 3 + Math.random() * 6;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
 
-            // Random size
-            const size = 6 + Math.random() * 10;
-            petal.style.width = `${size}px`;
-            petal.style.height = `${size * 0.6}px`;
+            // Random position at bottom
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.bottom = `${-2}%`;
 
-            // Random color from palette
+            // Random horizontal drift
+            const drift = -40 + Math.random() * 80;
+            particle.style.setProperty('--drift', `${drift}px`);
+
+            // Colors from jewelry palette
             const colors = [
-                'rgba(179, 157, 219, 0.25)',
-                'rgba(201, 169, 110, 0.2)',
-                'rgba(139, 108, 193, 0.2)',
-                'rgba(212, 197, 235, 0.3)',
-                'rgba(224, 200, 154, 0.2)'
+                'rgba(201, 169, 110, 0.6)',
+                'rgba(179, 157, 219, 0.5)',
+                'rgba(212, 185, 122, 0.7)',
+                'rgba(139, 108, 193, 0.4)',
+                'rgba(255, 223, 150, 0.5)',
+                'rgba(230, 210, 180, 0.6)'
             ];
-            petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.background = color;
+            particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
 
             // Random duration
-            const duration = 8 + Math.random() * 12;
-            petal.style.animationDuration = `${duration}s`;
+            const duration = 6 + Math.random() * 10;
+            particle.style.animationDuration = `${duration}s`;
 
-            // Random horizontal sway
-            const sway = -30 + Math.random() * 60;
-            petal.style.setProperty('--sway', `${sway}px`);
-
-            container.appendChild(petal);
+            container.appendChild(particle);
 
             setTimeout(() => {
-                petal.remove();
+                particle.remove();
             }, duration * 1000);
         }
 
-        function startFloatingPetals() {
-            // Create initial batch
-            for (let i = 0; i < 6; i++) {
-                setTimeout(() => createFloatingPetal(), i * 500);
+        function startBgParticles() {
+            // Initial burst
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => createBgParticle(), i * 300);
             }
             // Continuously spawn
-            setInterval(createFloatingPetal, 800);
+            setInterval(createBgParticle, 400);
         }
 
         // ============================================
@@ -1231,64 +1308,19 @@
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
             init();
-            startFloatingPetals();
+            startBgParticles();
         });
 
-        // ============================================
-        // PRELOADER SPARKLES & LOGIC
-        // ============================================
-        function createPreloaderSparkle() {
-            const container = document.getElementById('preloader-sparkles');
-            if (!container || !container.parentElement) return;
-
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-
-            const size = 6 + Math.random() * 12;
-            sparkle.style.width = `${size}px`;
-            sparkle.style.height = `${size}px`;
-
-            // Position around the center area
-            const angle = Math.random() * Math.PI * 2;
-            const radius = 60 + Math.random() * 140;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            sparkle.style.left = `${centerX + Math.cos(angle) * radius}px`;
-            sparkle.style.top = `${centerY + Math.sin(angle) * radius}px`;
-
-            // Color from palette
-            const colors = [
-                'rgba(201, 169, 110, 0.7)',
-                'rgba(179, 157, 219, 0.6)',
-                'rgba(212, 185, 122, 0.8)',
-                'rgba(139, 108, 193, 0.5)',
-                'rgba(255, 223, 150, 0.6)'
-            ];
-            sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
-
-            const duration = 1 + Math.random() * 1.5;
-            sparkle.style.animation = `sparkleAnim ${duration}s ease-out forwards`;
-
-            container.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), duration * 1000);
-        }
-
-        // Sparkle spawner for preloader
-        let sparkleInterval;
-        function startPreloaderSparkles() {
-            // Initial burst
-            for (let i = 0; i < 8; i++) {
-                setTimeout(() => createPreloaderSparkle(), i * 150);
-            }
-            sparkleInterval = setInterval(createPreloaderSparkle, 200);
-        }
-
         window.addEventListener('load', () => {
-            startPreloaderSparkles();
             const preloader = document.getElementById('preloader');
             setTimeout(() => {
-                clearInterval(sparkleInterval);
                 preloader.classList.add('hidden');
+
+                // Stagger entrance animations for content
+                const items = document.querySelectorAll('#rules-list li, .faq-item');
+                items.forEach((el, i) => {
+                    setTimeout(() => el.classList.add('visible'), 150 + i * 100);
+                });
             }, 3200);
         });
     </script>
